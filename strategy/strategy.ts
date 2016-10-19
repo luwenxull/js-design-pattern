@@ -6,10 +6,10 @@
 /**
  * 策略对象
  * @param  {string} publictype 策略类型
- * @param  {(val)=>any} action 策略算法
+ * @param  {} action 策略算法
  */
 class Strategy{
-    constructor(public type:string,public action:(val)=>any){}
+    constructor(public type:string,public action){}
 }
 
 let strategies={
@@ -27,3 +27,49 @@ class Bonus{
 
 let bonus1=new Bonus(1200,strategies.S);
 console.log(bonus1.getSalary());
+
+/*表单验证*/
+let isNonEmpty=new Strategy('isNonEmpty',(val,errMsg)=>{
+    if(val==='') return errMsg
+});
+
+let minLength=new Strategy('minLength',(val,errMsg)=>{
+    if(val.length<6) return errMsg
+});
+
+let isMobile=new Strategy('isMobile',(val,errMsg)=>{
+    if(!/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/i.test(val)) return errMsg
+});
+
+interface validateFieldItf{
+    val:any,
+    strategy:Strategy,
+    errMsg:string
+}
+
+class Validator{
+    constructor(public toBeValidate:validateFieldItf[]=[]){}
+    add(val,strategy:Strategy,errMsg:string){
+        let obj:validateFieldItf={val,strategy,errMsg}
+        this.toBeValidate.push(obj);
+    }
+    start(){
+        let errMsgs=[];
+        for(let v of this.toBeValidate){
+            if(v.strategy.action(v.val,v.errMsg)){
+                errMsgs.push(v.errMsg)
+            }
+        }
+        return errMsgs;
+    }
+}
+
+function validate(){
+    let validator=new Validator();
+    validator.add('luwenxu',isNonEmpty,'用户名不能为空');
+    validator.add('12456',minLength,'密码长度不能小于6位');
+    validator.add('136454321',isMobile,'手机号码格式不正确');
+    console.log(validator.start()); 
+}
+
+validate()
