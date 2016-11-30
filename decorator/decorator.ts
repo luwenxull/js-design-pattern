@@ -67,7 +67,7 @@ function client_dec(){
     let chopsticksUser=new UseChopsticks(teen);
     teen.eat('肉');
     forkUser.eat('鱼');
-    chopsticksUser.eat('肌肉');
+    chopsticksUser.eat('鸡肉');
 }
 
 client_dec()

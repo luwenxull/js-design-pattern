@@ -22,7 +22,10 @@ let strategies = {
     B: new Strategy('B', (salary) => { return salary * 2 })
 };
 
-/*策略封装类*/
+/*
+ *策略封装类
+ *（环境类）    
+ */
 class Bonus {
     private strategy:Strategy;
     constructor(public salary: number,public level:string) {
@@ -34,16 +37,18 @@ class Bonus {
 }
 
 /*客户端代码*/
-function client() {
+function client_strategy() {
     let bonus1 = new Bonus(1200,'S');
     console.log(bonus1.getSalary());
+    
     let bonus2 = new Bonus(2200,'A');
     console.log(bonus2.getSalary());
+
     let bonus3 = new Bonus(1400,'B');
     console.log(bonus3.getSalary());
 }
 
-client()
+client_strategy()
 
 /*表单验证*/
 let isNonEmpty = new Strategy('isNonEmpty', (val, errMsg) => {
